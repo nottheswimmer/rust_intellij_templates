@@ -5,10 +5,10 @@ that support apache velocity templates (e.g. any JetBrains IDE that
 supports Rust and maybe others).
 
 ## Installation
-1. Go to File | Settings | Editor | File and Code Templates in JetBrains IDE (direct settings links below)
-   - [CLion](jetbrains://CLion/settings?name=Editor--File+and+Code+Templates)
-   - [IntelliJ IDEA](jetbrains://idea/settings?name=Editor--File+and+Code+Templates)
-   - [PyCharm](jetbrains://Python/settings?name=Editor--File+and+Code+Templates)
+1. Go to File | Settings | Editor | File and Code Templates in JetBrains IDE (paste into browser, may require jetbrains toolbox)
+   - CLion: jetbrains://CLion/settings?name=Editor--File+and+Code+Templates
+   - IntelliJ IDEA: jetbrains://idea/settings?name=Editor--File+and+Code+Templates
+   - PyCharm: jetbrains://Python/settings?name=Editor--File+and+Code+Templates
 2. On the files tab, click +
 3. Enter the following:
     - Name: My Rust Template (or whatever you want)
