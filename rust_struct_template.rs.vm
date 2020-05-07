@@ -7,7 +7,7 @@ Configuration notes:
 - Reformat according to style: false
 - Enable Live Templates: true
 @author Michael Phelps
-@version 1.0.0
+@version 1.0.1
 *#
 ## Initialize some variables as empty strings to avoid prompts
 #set( $lifetime = "")
