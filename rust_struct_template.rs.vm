@@ -1,0 +1,151 @@
+#**
+Generates a structure in Rust (for use in IntelliJ IDEs as
+a "File and Code" template)
+Configuration notes:
+- Name: Whaetever you want
+- Extension: rs
+- Reformat according to style: false
+- Enable Live Templates: true
+@author Michael Phelps
+@version 1.0.0
+*#
+## Initialize some variables as empty strings to avoid prompts
+#set( $lifetime = "")
+#set( $newSig = "")
+#set( $params = "")
+#set( $testArgs = "")
+#set( $fieldExample = "" )
+#set( $fieldNameList = "" )
+#set( $fieldType = "" )
+#set( $fieldName = "" )
+#set( $valueAndType = "" )
+#set( $i = "" )
+#set( $j = "" )
+#set( $str = "")
+#set( $lifetimeStr = "'a")  ## If we need a lifetime, this will be used
+#set( $derives = ["Debug"])
+## Add extra derives
+#foreach($i in $extraDerives.split("\\s*,\\s*"))
+#if ("$i" != "" && !$derives.contains($i))
+#set($j = $derives.add($i))
+#end
+#end
+#macro( addFields $fieldNameList $fieldType $fieldExample )
+#if ( "$fieldNameList" != "" )
+#set($fields = $fieldNameList.split("\\s*,\\s*"))
+#else
+#set($fields = [])
+#end
+#foreach ($fieldName in $fields)
+#if ("$fieldName" != "")
+#set($newSig = "${newSig}${fieldName}: $fieldType, ")
+#set($params = "${params}${fieldName}, ")
+#set($testArgs = "${testArgs}$fieldExample, ")
+#end
+#end
+#end
+#set( $CamelCaseName = "" )
+#set( $part = "" )
+#foreach($part in $NAME.split("_"))
+#set( $CamelCaseName = "${CamelCaseName}$part.substring(0,1).toUpperCase()$part.substring(1).toLowerCase()" )
+#end
+#addFields( $strFieldNames "&$lifetimeStr str" """abc""" )
+#addFields( $StringFieldNames "String" "String::from(""abc"")" )
+#addFields( $charFieldNames "char" "'a'" )
+#addFields( $i32FieldNames "i32" "1" )
+#addFields( $f32FieldNames "f32" "1.0" )
+#addFields( $boolFieldNames "bool" "false" )
+#addFields( $i32VecFieldNames "Vec<i32>" "vec![1, 2, 3]" )
+#addFields( $f32VecFieldNames "Vec<f32>" "vec![1.0, 2.0, 3.0]" )
+#addFields( $strVecFieldNames "Vec<&$lifetimeStr str>" "vec![""a"", ""b"", ""c"" ]" )
+#addFields( $StringVecFieldNames "Vec<String>" "vec![String::from(""a""), String::from(""b""), String::from(""c"")]" )
+#addFields( $charVecFieldNames "Vec<char>" "vec!['a', 'b', 'c']" )
+#addFields( $i32SetFieldNames "HashSet<i32>" "HashSet::new()" )
+#addFields( $strSetFieldNames "HashSet<&$lifetimeStr str>" "HashSet::new()" )
+#addFields( $charSetFieldNames "HashSet<char>" "HashSet::new()" )
+#addFields( $StringSetFieldNames "HashSet<String>" "HashSet::new()" )
+#addFields( $StringStringHashMapFieldNames "HashMap<String,String>" "HashMap::new()" )
+#set($params = ${params.toString().replaceAll(", $", "")})
+#set($newSig = ${newSig.toString().replaceAll(", $", "")})
+#set($testArgs = ${testArgs.toString().replaceAll(", $", "")})
+#if(${newSig.toString().contains("$lifetimeStr")})
+#set($lifetime = $lifetimeStr)
+#end
+use std::fmt;
+#if (${testArgs.toString().contains("HashSet::")})
+use std::collections::HashSet;
+#end
+#if (${testArgs.toString().contains("HashMap::")})
+use std::collections::HashMap;
+#end
+/// A $CamelCaseName is represented here
+///
+/// #[derive(Debug)] is for allowing the struct to be debug printed
+#[derive(${str.join(", ", $derives)})]
+pub struct $CamelCaseName<$lifetime> {
+#if ($newSig != "")
+#foreach( $valueAndType in $newSig.split(", ") )
+    /// A $NAME instance must have a ${valueAndType.split(':')[0]}
+    ${valueAndType},
+#end
+#end
+}
+
+impl<${lifetime}> $CamelCaseName<${lifetime}> {
+    /// Returns a $NAME instance
+    ///
+#if ($newSig != "")
+    /// # Arguments
+    ///
+#foreach( $valueAndType in $newSig.split(", ") )
+    /// * `${valueAndType.split(':')[0]}` - A ${valueAndType.split(':')[1].toString().trim()} that holds the ${valueAndType.split(':')[0]} of the $NAME instance
+#end
+    ///
+#end
+    /// # Example
+    ///
+    /// ```
+    /// // You can have rust code between fences inside the comments
+    /// // If you pass --test to Rustdoc, it will even test it for you!
+    /// use doc::$CamelCaseName
+    /// let $NAME = $CamelCaseName::new($testArgs);
+    /// println!("{}", ${NAME});
+    /// ```
+    pub fn new($newSig) -> $CamelCaseName<${lifetime}> {
+    $CamelCaseName { $params }
+    }
+
+    // Getters
+#if("$newSig" != "")
+#foreach( $valueAndType in $newSig.split(", ") )
+    pub fn ${valueAndType.split(':')[0]}(&self) -> &${valueAndType.split(':')[1].toString().trim().replaceAll("^&+", "")} { &self.${valueAndType.split(':')[0]} }
+#end
+#end
+}
+
+impl<${lifetime}> fmt::Display for $CamelCaseName<${lifetime}> {
+    /// A string representation of the $NAME instance for user-facing output
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "$CamelCaseName instance")
+    }
+}
+
+// Issue: The above doc-tests won't work if the target is a binary.
+// Here are some physical tests as an alternative that will run for a binary
+// with `cargo test`.
+//
+// https://github.com/rust-lang/rust/issues/50784
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+    #[test]
+    fn test_create() {
+        let ${NAME} = $CamelCaseName::new($testArgs);
+        println!("{}", ${NAME});
+        #foreach( $valueAndType in $newSig.split(", ") )
+        println!("{:?}", ${NAME}.${valueAndType.split(':')[0]}());
+        #end
+    }
+}
