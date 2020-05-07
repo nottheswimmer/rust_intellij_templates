@@ -128,24 +128,24 @@ mod tests {
     fn test_create() {
         let person = Person::new("abc", "abc", String::from("abc"), 'a', 'a', 'a', 1, 1, 1.0, false, vec![1, 2, 3], vec!["a", "b", "c" ], vec![String::from("a"), String::from("b"), String::from("c")], vec!['a', 'b', 'c'], HashSet::new(), HashSet::new(), HashSet::new(), HashSet::new(), HashMap::new());
         println!("{}", person);
-                println!("{:?}", person.ethnicity());
-                println!("{:?}", person.name());
-                println!("{:?}", person.favorite_name());
-                println!("{:?}", person.first_initial());
-                println!("{:?}", person.middle_initial());
-                println!("{:?}", person.last_initial());
-                println!("{:?}", person.age());
-                println!("{:?}", person.iq());
-                println!("{:?}", person.gpa());
-                println!("{:?}", person.ic_cool());
-                println!("{:?}", person.lottery_numbers());
-                println!("{:?}", person.last_words());
-                println!("{:?}", person.contact_list());
-                println!("{:?}", person.letter_grades());
-                println!("{:?}", person.favorite_numbers());
-                println!("{:?}", person.favorite_colors());
-                println!("{:?}", person.favorite_letters());
-                println!("{:?}", person.favorite_words());
-                println!("{:?}", person.top_songs_by_album());
-            }
+        println!("{:?}", person.ethnicity());
+        println!("{:?}", person.name());
+        println!("{:?}", person.favorite_name());
+        println!("{:?}", person.first_initial());
+        println!("{:?}", person.middle_initial());
+        println!("{:?}", person.last_initial());
+        println!("{:?}", person.age());
+        println!("{:?}", person.iq());
+        println!("{:?}", person.gpa());
+        println!("{:?}", person.ic_cool());
+        println!("{:?}", person.lottery_numbers());
+        println!("{:?}", person.last_words());
+        println!("{:?}", person.contact_list());
+        println!("{:?}", person.letter_grades());
+        println!("{:?}", person.favorite_numbers());
+        println!("{:?}", person.favorite_colors());
+        println!("{:?}", person.favorite_letters());
+        println!("{:?}", person.favorite_words());
+        println!("{:?}", person.top_songs_by_album());
+    }
 }

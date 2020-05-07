@@ -144,8 +144,8 @@ mod tests {
     fn test_create() {
         let ${NAME} = $CamelCaseName::new($testArgs);
         println!("{}", ${NAME});
-        #foreach( $valueAndType in $newSig.split(", ") )
+#foreach( $valueAndType in $newSig.split(", ") )
         println!("{:?}", ${NAME}.${valueAndType.split(':')[0]}());
-        #end
+#end
     }
 }
